@@ -1,9 +1,7 @@
-# import dependencies
+#import dependencies
 import random
-import pickle
 import numpy as np
-
-from nltk.stem import WordNetLemmatizer
+import os
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import (
@@ -11,17 +9,45 @@ from tensorflow.keras.layers import (
   Activation,
   Dropout
 )
-from tensorflow.keras.optimizers import SGD # imports stockastic gradient descent
+from tensorflow.keras.optimizers import SGD # stockastic gradient descent
 
-from document import get_document
+from bag_of_words import create_bag_of_words
 
-ignore_letters = ["?", "!", ".", ","]
+def train():
+  X, Y = get_training_data()
+  # start building neural network
+  print(f"Building neural network...")
+  # create model
+  model = Sequential()
+  model.add(Dense(128, input_shape=(len(X[0]),), activation="relu"))
+  model.add(Dropout(0.5))
+  model.add(Dense(64, activation="relu"))
+  model.add(Dropout(0.5))
+  model.add(Dense(len(Y[0]), activation="softmax"))
+  #create optimizer
+  sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+  model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
+  # fit model
+  model.fit(np.array(X), np.array(Y), epochs=200, batch_size=5, verbose=1)
+  # save model
+  directory_name = "files"
+  file_name = os.path.join(directory_name, "chatbot_model.model")
+  if not os.path.isdir(directory_name):
+    os.mkdir(directory_name)
+  model.save(file_name)
 
-def main():
-  words, classes, documents = get_document()
-  print(f"\nDocument is:")
-  for doc in documents:
-    print(f"{doc}")
+def get_training_data():
+  training_data = create_bag_of_words()
+  random.shuffle(training_data)
+  # convert the training data to a numpy array to be used in tensorflow
+  training_data = np.array(training_data)
+  # create features and targets
+  train_x = list(training_data[:, 0])
+  train_y = list(training_data[:, 1])
+  #
+  return train_x, train_y
 
 if __name__ == "__main__":
-  main()
+  print(f"Training model started...")
+  train()
+  print(f"Successfully trained saved model...")

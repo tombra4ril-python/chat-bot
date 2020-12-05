@@ -2,7 +2,8 @@
 import json
 import nltk
 
-def get_document():
+def get_documents():
+  print(f"Reading json file...")
   intents = json.loads(open("../intent.json").read())
 
   words = [] # contains tokenized words
@@ -13,7 +14,7 @@ def get_document():
     for pattern in intent["patterns"]:
       tokenized_words = nltk.word_tokenize(pattern)
       words.extend(tokenized_words)
-      documents.append((tokenized_words, intent["tags"]))
+      documents.append({"words": tokenized_words, "label": intent["tags"]})
       # check if the tag is not in the classes list
       if intent["tags"] not in classes:
         classes.append(intent["tags"])
@@ -21,4 +22,6 @@ def get_document():
   return words, classes, documents
 
 if __name__ == "__main__":
+  print("Creating word document...")
   get_document()
+  print("Successfully created words, classes and documents...")
