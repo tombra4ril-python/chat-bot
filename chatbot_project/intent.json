@@ -9,7 +9,7 @@
   },
   {"tags": "age",
   "patterns": ["how old", "how old are you", "what is your age", "age"],
-  "response": ["I don't have an age", "So you know I don't age with time"]
+  "response": ["I don't have an age", "So you know, I don't age with time"]
   },
   {"tags": "owner",
   "patterns": ["who is your owner", "who owns you", "who do you belong to", "who do you work for"],

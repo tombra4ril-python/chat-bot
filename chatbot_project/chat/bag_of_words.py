@@ -1,7 +1,7 @@
 # import dependencies
 from nltk.stem import WordNetLemmatizer
 
-from document import get_documents
+from .document import get_documents
 
 # get the document object
 words, classes, documents = get_documents()
@@ -31,8 +31,8 @@ def create_bag_of_words():
     # append the bag of words and label to the training variable
     training_data.append([bag_of_words, label])
   #
+  print(f"Created training data Successfully...")
   return training_data
 
 if __name__ == "__main__":
   create_bag_of_words()
-  print(f"Created training data Successfully...")
