@@ -18,5 +18,9 @@
   {"tags": "goodbye",
   "patterns": ["See ya", "good bye", "later", "Have a nice day", "bye", "bye for now"],
   "response": ["Goodbye", "bye", "have a nice day"]
+  },
+  {"tags": "insult",
+  "patterns": ["Fuck you", "Bullshit", "bs"],
+  "response": ["Fuck you man", "Fuck you too"]
   }
 ]}
